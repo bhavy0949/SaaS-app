@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title> {% block title %} Base {% endblock title %} </title>
+
+</head>
+
+<body>
+    <P>{{ request }}</P>
+    <P>{{ request.user }} {{request.method}} - {{request.user.is_authenticated}}</P>
+
+    {% block content %}
+    {% endblock content %}
+</body>
+
+</html>
