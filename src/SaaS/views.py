@@ -7,16 +7,22 @@ from visits.models import PageVisit
 this_dir = pathlib.Path(__file__).resolve().parent
 
 def home_page_view(request, *args, **kwargs):
-    print(request)
+    return about_view(request, *args, **kwargs)
+
+def about_view(request, *args, **kwargs):
     qs = PageVisit.objects.all()
     path = request.path
     page_qs = PageVisit.objects.filter(path = path)
+    try:
+        percenatge = page_qs.count() * 100/qs.count()
+    except:
+        percenatge = 0
     my_title = "My First Django Page"
     my_context = {
         "page_title": my_title,
         "page_visit_count": page_qs.count(),
         "total_visit_count": qs.count(),
-        "percentage": page_qs.count() * 100/qs.count(),
+        "percentage": percenatge,
     }
     PageVisit.objects.create(path = path)
     return render(request, "home.html", my_context)
