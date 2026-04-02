@@ -56,12 +56,12 @@ pipeline {
             sh "docker rmi ${IMAGE_NAME}:latest || true"
         }
         success {
-            mail to: [EMAIL_ADDRESS],
+            mail to: $EMAIL_ADDRESS,
                 subject: 'Build Success',
                 body: 'Build passed'
         }
         failure {
-            mail to: [EMAIL_ADDRESS],
+            mail to: $EMAIL_ADDRESS,
                 subject: 'Build Failed',
                 body: 'Check logs'
         }
