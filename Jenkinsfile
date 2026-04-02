@@ -2,8 +2,6 @@ pipeline {
     agent any
 
     environment {
-        // ID of the credentials stored in Jenkins for your Docker Hub username/password
-        DOCKERHUB_CREDENTIALS = credentials('dockerhub-credentials-id')
         // Replace this with your actual Docker Hub username and repository name
         IMAGE_NAME = 'bhavy0949/saas-app'
         IMAGE_TAG = "${env.BUILD_NUMBER}"
