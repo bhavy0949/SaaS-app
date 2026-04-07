@@ -46,7 +46,8 @@ SECRET_KEY = config("DJANGO_SECRET_KEY", default="django-insecure-(&alyc6m=khg(_
 DEBUG = config("DJANGO_DEBUG", cast=bool, default=False)
 
 ALLOWED_HOSTS = [
-    "saas-app-production-e293.up.railway.app",
+    ".railway.app",
+    "*",
 ]
 
 
