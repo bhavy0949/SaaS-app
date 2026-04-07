@@ -69,9 +69,8 @@ ARG PROJ_NAME="SaaS"
 # the container starts and the database is available
 RUN printf "#!/bin/bash\n" > ./paracord_runner.sh && \
     printf "RUN_PORT=\"\${PORT:-8000}\"\n\n" >> ./paracord_runner.sh && \
-    printf "RUN python manage.py vendor_pull" >> ./paracord_runner.sh && \
-    printf "RUN python manage.py collectstatic --noinput" >> ./paracord_runner.sh && \
-
+    printf "python manage.py vendor_pull\n" >> ./paracord_runner.sh && \
+    printf "python manage.py collectstatic --noinput\n" >> ./paracord_runner.sh && \
     printf "python manage.py migrate --no-input\n" >> ./paracord_runner.sh && \
     printf "gunicorn ${PROJ_NAME}.wsgi:application --bind \"[::]:\$RUN_PORT\"\n" >> ./paracord_runner.sh
 
