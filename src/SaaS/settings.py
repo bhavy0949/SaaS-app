@@ -49,7 +49,6 @@ DEBUG = config("DJANGO_DEBUG", cast=bool)
 
 ALLOWED_HOSTS = [
     ".railway.app",
-    "*",
 ]
 
 
