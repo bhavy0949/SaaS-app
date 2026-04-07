@@ -72,7 +72,7 @@ RUN printf "#!/bin/bash\n" > ./paracord_runner.sh && \
     printf "python manage.py vendor_pull\n" >> ./paracord_runner.sh && \
     printf "python manage.py collectstatic --noinput\n" >> ./paracord_runner.sh && \
     printf "python manage.py migrate --no-input\n" >> ./paracord_runner.sh && \
-    printf "gunicorn ${PROJ_NAME}.wsgi:application --bind \"0.0.0.0:\$RUN_PORT\" --log-level debug --access-logfile - --error-logfile -\n" >> ./paracord_runner.sh
+    printf "gunicorn ${PROJ_NAME}.wsgi:application --bind \"0.0.0.0:\$RUN_PORT\" --timeout 120 --workers 2 --log-level debug --access-logfile - --error-logfile -\n" >> ./paracord_runner.sh
     
 
 # make the bash script executable
