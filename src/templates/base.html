@@ -6,15 +6,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title> {% block title %} Base {% endblock title %} </title>
+    {% include "base/css.html" %}
 
 </head>
 
 <body>
+    {% include "nav/navbar.html" %}
     <P>{{ request }}</P>
     <P>{{ request.user }} {{request.method}} - {{request.user.is_authenticated}}</P>
-
     {% block content %}
     {% endblock content %}
+    {% include "base/js.html" %}
 </body>
 
 </html>

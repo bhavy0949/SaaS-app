@@ -9,24 +9,44 @@ https://docs.djangoproject.com/en/5.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
-
+from decouple import config
 from pathlib import Path
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent
 
 
+# Email config
+EMAIL_HOST=config("EMAIL_HOST", default="smtp.gmail.com")
+EMAIL_PORT=config("EMAIL_PORT", default="587")
+EMAIL_USE_TLS=config("EMAIL_USE_TLS", cast=bool, default=True)
+EMAIL_USE_SSL=config("EMAIL_USE_SSL", cast=bool, default=False)
+EMAIL_HOST_USER=config("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD=config("EMAIL_HOST_PASSWORD")
+
+# 500 errors
+# 500 errors
+ADMIN_USER_NAME=config(" ADMIN_USER_NAME", default="Admin user")
+ADMIN_USER_EMAIL=config("ADMIN_USER_EMAIL", default=None)
+MANAGERS=[]
+ADMINS=[]
+if all([ADMIN_USER_NAME, ADMIN_USER_EMAIL]):
+    # 500 efrors are emailed to these users
+    ADMINS+=[(f'{ADMIN_USER_NAME}', f'{ADMIN_USER_EMAIL}')]
+    MANAGERS=ADMINS
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-(&alyc6m=khg(_6l_3e5jlfx_x8tp2s57r^4uc$ayb((y6hlf$"
+SECRET_KEY = config("DJANGO_SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config("DJANGO_DEBUG", cast=bool)
 
 ALLOWED_HOSTS = [
-    
+    "saas-app-production-e293.up.railway.app",
 ]
 
 
@@ -41,10 +61,12 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     # my apps
     "visits",
+    "commando",
 ]
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -84,6 +106,19 @@ DATABASES = {
     }
 }
 
+DATABASE_URL = config("DATABASE_URL", default=None, cast=str)
+# Override database if URL exists
+if DATABASE_URL:
+    # Converts a URL into Django DB config
+    # Extra parameters:
+    # 🧩 conn_max_age=30
+    # Keeps DB connection alive for 30 seconds
+    # 👉 Improves performance (connection pooling)
+    # 🧩 conn_health_checks=True
+    # Checks if connection is alive before reuse
+    # 👉 Prevents broken connections
+    DATABASES["default"] = dj_database_url.config(default=DATABASE_URL, conn_health_checks=True, conn_max_age=30,)
+
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
@@ -120,6 +155,25 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 STATIC_URL = "static/"
+
+STATICFILES_BASE_DIRS = BASE_DIR.parent / "staticfiles"
+STATICFILES_VENDOR_DIRS = STATICFILES_BASE_DIRS / "vendors"
+
+#  source(S) for python manage.py collectstatic
+STATICFILES_DIRS = [
+    STATICFILES_BASE_DIRS,
+]
+
+#  output for python manage.py collectstatic
+STATIC_ROOT = BASE_DIR.parent / "local-cdn"
+if not DEBUG:
+    STATIC_ROOT = BASE_DIR.parent / "prod-cdn"
+
+STORAGES = {
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field

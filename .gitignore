@@ -1,6 +1,12 @@
 .DS_Store
 /venv
 /src/venv
+# ignore vendor static files 
+src/staticfiles/vendors
+
+# ignore local cdn
+local-cdn/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]
