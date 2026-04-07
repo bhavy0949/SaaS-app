@@ -106,7 +106,7 @@ DATABASES = {
     }
 }
 
-DATABASE_URL = config("DATABASE_URL", default=None, cast=str)
+DATABASE_URL = config("DATABASE_URL", default="")
 # Override database if URL exists
 if DATABASE_URL:
     # Converts a URL into Django DB config
