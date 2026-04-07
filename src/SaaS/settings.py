@@ -68,7 +68,6 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    STATICFILES_STORAGE = "django.contrib.staticfiles.storage.StaticFilesStorage",
     "django.middleware.security.SecurityMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
