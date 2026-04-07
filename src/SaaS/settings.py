@@ -9,6 +9,7 @@ https://docs.djangoproject.com/en/5.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
+from django.conf.global_settings import SECRET_KEY
 from decouple import config
 from pathlib import Path
 import dj_database_url
@@ -40,7 +41,8 @@ if all([ADMIN_USER_NAME, ADMIN_USER_EMAIL]):
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = config("DJANGO_SECRET_KEY")
+# SECRET_KEY = config("DJANGO_SECRET_KEY")
+SECRET_KEY = "django-insecure-(&alyc6m=khg(_6l_3e5jlfx_x8tp2s57r^4uc$ayb((y6hlf$"
 if not SECRET_KEY:
     raise ValueError("DJANGO_SECRET_KEY is not set")
 
