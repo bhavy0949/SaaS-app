@@ -6,11 +6,8 @@ from visits.models import PageVisit
 # .resolve() -> gives /Users/bhavygupta/Documents/saas-app/src/SaaS/home.html   (absolute path)
 this_dir = pathlib.Path(__file__).resolve().parent
 
-# def home_page_view(request, *args, **kwargs):
-#     return about_view(request, *args, **kwargs)
-
 def home_page_view(request, *args, **kwargs):
-    return HttpResponse("OK")
+    return about_view(request, *args, **kwargs)
 
 def about_view(request, *args, **kwargs):
     qs = PageVisit.objects.all()
